@@ -4,23 +4,27 @@ class Solution {
             return false;
         }
         
-        Map<Character, Character> map = new HashMap<>();
-        Set<Character> mappedChars = new HashSet<>();
+        Map<Character, Character> sToT = new HashMap<>();
+        Map<Character, Character> tToS = new HashMap<>();
         
         for (int i = 0; i < s.length(); i++) {
             char charS = s.charAt(i);
             char charT = t.charAt(i);
             
-            if (map.containsKey(charS)) {
-                if (map.get(charS) != charT) {
+            if (sToT.containsKey(charS)) {
+                if (sToT.get(charS) != charT) {
                     return false;
                 }
             } else {
-                if (mappedChars.contains(charT)) {
+                sToT.put(charS, charT);
+            }
+            
+            if (tToS.containsKey(charT)) {
+                if (tToS.get(charT) != charS) {
                     return false;
                 }
-                map.put(charS, charT);
-                mappedChars.add(charT);
+            } else {
+                tToS.put(charT, charS);
             }
         }
         
