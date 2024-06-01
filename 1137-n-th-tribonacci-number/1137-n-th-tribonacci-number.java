@@ -1,14 +1,20 @@
 class Solution {
     public int tribonacci(int n) {
         if (n < 2) return n;
-        int a = 0, b = 1, c = 1, d;
-        while (n-- > 2) {
-            d = a + b + c;
-            a = b;
-            b = c;
-            c = d;
+        else if(n==2) return 1;
+        int fterm = 0;
+        int sterm = 1;
+        int tterm = 1;
+        
+        for(int i=1; i<n; i++){
+            int foterm = fterm + sterm + tterm;
+            fterm = sterm;
+            sterm = tterm;
+            tterm = foterm;
         }
-        return c;
+        return sterm;
+        
+        
         
     }
 }
