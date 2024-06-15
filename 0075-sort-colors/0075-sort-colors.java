@@ -3,7 +3,6 @@ class Solution {
         int low =0;
         int mid = 0;
         int high = nums.length -1;
-        
         while(mid <= high){
             if(nums[mid]==0){
                 swap(nums, low, mid);
@@ -18,7 +17,6 @@ class Solution {
                 high--;
             }
         }
-        
     }
     
     public void swap(int[] nums, int i, int j){
