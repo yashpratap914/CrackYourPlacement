@@ -18,12 +18,10 @@ class Solution {
             }
             else{
                 end--;
-            }
-            
+            }            
         }
         ans[0]=p+1;
         ans[1]= q+1;
-        return ans;
-        
+        return ans;        
     }
 }
