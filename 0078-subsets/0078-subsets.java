@@ -1,19 +1,32 @@
 class Solution {
-    public List<List<Integer>> subsets(int[] S) {
-        List<List<Integer>> res = new ArrayList<>();
-        res.add(new ArrayList<Integer>());
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> answer = new ArrayList<>();
         
-        Arrays.sort(S);
-        for(int i : S) {
-            List<List<Integer>> tmp = new ArrayList<>();
-            for(List<Integer> sub : res) {
-                List<Integer> a = new ArrayList<>(sub);
-                a.add(i);
-                tmp.add(a);
-            }
-            res.addAll(tmp);
+        List<Integer> new_list = new ArrayList<Integer>();
+        answer.add(new ArrayList<Integer>(new_list));
+        
+        int len = nums.length;
+        if(len == 0) {
+            return answer;
         }
-        return res;
+        if(len == 1) {
+            new_list.add(nums[0]);
+            answer.add(new ArrayList<Integer>(new_list));
+            return answer;
+        }
+
+        List<List<Integer>> temp = new ArrayList<>();
+        
+        for(int i = 0; i < len; i++){
+            for(int j = 0; j < answer.size(); j++){
+                new_list = new ArrayList<Integer>(answer.get(j));
+                new_list.add(nums[i]);
+                temp.add(new_list);
+            }
+            answer.addAll(temp);
+            temp.clear();
+        }
+        return answer;
         
     }
 }
