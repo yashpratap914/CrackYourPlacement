@@ -1,33 +1,32 @@
 class Solution {
     public void rotate(int[][] matrix) {
-        int l = 0;
-        int r = matrix.length - 1;
-        
-        while ( l < r )
-        {
-            for(int i = 0; i < r - l; i++)
-            {
-                int top = l;
-                int bottom = r;
-                 //save the topleft
-                int topLeft = matrix[top][l + i];
-
-                //move bottom left into top left
-                matrix[top][l + i] = matrix[bottom - i][l];
-
-                // move bottom right into bottom left
-                matrix[bottom - i][l] = matrix[bottom][r - i];
-
-                // move top right into bottom right
-                matrix[bottom][r - i] = matrix[top + i][r];
-
-                // move top left into top right
-                matrix[top + i][r] = topLeft;
-                
+        //TRANSPOSE -> REVERSE EVERY ROW
+        transpose(matrix);
+        reverserow(matrix); 
+    }
+    public void transpose(int[][] arr){
+        int n = arr.length;
+        for(int i =0; i<n; i++){
+            for(int j=0; j<i; j++){
+                int temp = arr[i][j];
+                arr[i][j] = arr[j][i];
+                arr[j][i] = temp;
             }
-            
-            r -= 1;
-            l += 1;
         }
+        
+    }
+    public void reverserow(int[][] arr){
+        for(int r=0; r<arr.length; r++){
+            int left =0;
+            int right = arr.length-1;
+            while(left<right){
+                int temp = arr[r][left];
+                arr[r][left] = arr[r][right];
+                arr[r][right]= temp;
+                left++;
+                right--;
+            }
+        }
+        
     }
 }
