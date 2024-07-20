@@ -1,18 +1,23 @@
 class Solution {
-    public String reverseWords(String s) {
-        String[] w = s.split("\\s+"); // split on basis of spaces
-        StringBuilder sb = new StringBuilder(""); // gain n again +
+    // Define the method to reverse the order of words in a string
+    public String reverseWords(String s) { 
+        // Split the input string 's' into words based on one or more spaces.
+        // The split() method uses a regular expression " +" which matches one or more spaces.
+        String[] words = s.split(" +");
         
-        for(int i = w.length-1; i>=0;i--){
-            
-            sb.append(w[i]+" ");
+        // Create a StringBuilder object to build the reversed string efficiently.
+        StringBuilder sb = new StringBuilder();
+        
+        // Iterate over the words array from the last word to the first.
+        for(int i = words.length - 1; i >= 0; i--){
+            // Append the current word to the StringBuilder.
+            sb.append(words[i]);
+            // Append a space after the word. This ensures words are separated by a single space in the final output.
+            sb.append(" ");
         }
         
-        //trim func -> remove trailing nd leading spaces
-        String ans = sb.toString();
-        ans = ans.trim();
-        
-        return ans;
-        
+        // Convert the StringBuilder object to a String and remove any trailing spaces.
+        // The trim() method is used to remove the extra space added at the end of the reversed sentence.
+        return sb.toString().trim();
     }
 }
