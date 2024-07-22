@@ -1,35 +1,54 @@
+import java.util.HashMap;
+
 class Solution {
     public String minWindow(String s, String t) {
-        HashMap<Character, Integer> map = new HashMap<>();
+        if (s.length() == 0 || t.length() == 0) return "";
 
-        for (char x : t.toCharArray()) {
-            map.put(x, map.getOrDefault(x, 0) + 1);
+        String ans = "";
+        HashMap<Character, Integer> tMap = new HashMap<>();
+        for (char ch : t.toCharArray()) {
+            tMap.put(ch, tMap.getOrDefault(ch, 0) + 1);
         }
 
-        int matched = 0;
-        int start = 0;
-        int minLen = s.length() + 1;
-        int subStr = 0;
-        for (int endWindow = 0; endWindow < s.length(); endWindow++) {
-            char right = s.charAt(endWindow);
-            if (map.containsKey(right)) {
-                map.put(right, map.get(right) - 1);
-                if (map.get(right) == 0) matched++;
+        HashMap<Character, Integer> windowMap = new HashMap<>();
+        int i = 0, j = 0; // Window pointers
+        int required = tMap.size(); // Number of unique characters in t to match
+        int formed = 0; // Number of unique characters matched in the current window
+        int[] ansLength = {Integer.MAX_VALUE, 0, 0}; // Length of window, left, right
+
+        while (j < s.length()) {
+            char ch = s.charAt(j);
+            windowMap.put(ch, windowMap.getOrDefault(ch, 0) + 1);
+
+            // Check if the current character's frequency matches with the target frequency
+            if (tMap.containsKey(ch) && windowMap.get(ch).intValue() == tMap.get(ch).intValue()) {
+                formed++;
             }
 
-            while (matched == map.size()) {
-                if (minLen > endWindow - start + 1) {
-                    minLen = endWindow - start + 1;
-                    subStr = start;
+            // Try to contract the window until the point it ceases to be 'desirable'
+            while (i <= j && formed == required) {
+                ch = s.charAt(i);
+
+                // Update the answer if this window is smaller
+                if (j - i + 1 < ansLength[0]) {
+                    ansLength[0] = j - i + 1;
+                    ansLength[1] = i;
+                    ansLength[2] = j;
                 }
-                char deleted = s.charAt(start++);
-                if (map.containsKey(deleted)) {
-                    if (map.get(deleted) == 0) matched--;
-                    map.put(deleted, map.get(deleted) + 1);
+
+                // The character at the position pointed by `i` is no longer a part of the window
+                windowMap.put(ch, windowMap.get(ch) - 1);
+                if (tMap.containsKey(ch) && windowMap.get(ch).intValue() < tMap.get(ch).intValue()) {
+                    formed--;
                 }
+
+                i++;
             }
+
+            // Keep expanding the window
+            j++;
         }
-        return minLen > s.length() ? "" : s.substring(subStr, subStr + minLen);
-        
+
+        return ansLength[0] == Integer.MAX_VALUE ? "" : s.substring(ansLength[1], ansLength[2] + 1);
     }
 }
