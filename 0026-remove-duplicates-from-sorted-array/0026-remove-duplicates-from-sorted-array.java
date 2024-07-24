@@ -1,14 +1,19 @@
 class Solution {
     public int removeDuplicates(int[] nums) {
-        int left=0, right=0;
-        while(right<nums.length){
-            if(nums[left]!= nums[right]){
-                left++;
-                nums[left] = nums[right];
+        // 2 pointer approach
+        int i =0;
+        int j =0;
+        
+        while(i<nums.length){
+            if(nums[i]==nums[j]){
+                i++;
+            }else{
+                j++;
+                nums[j]=nums[i];
             }
-            right++;
         }
-        return left+1;
-        //TC:O(n), SC: O(1)
+        return j+1;
+        
+        
     }
 }
