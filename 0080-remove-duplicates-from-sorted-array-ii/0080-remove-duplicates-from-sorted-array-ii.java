@@ -1,18 +1,13 @@
 class Solution {
-    public int removeDuplicates(int[] nums) {
-        int n = nums.length;
-        if(n<=2){
-            return n;
-        }
+    public int removeDuplicates(int[] nums) {     
+        
 
-        int j = 2;
-        for(int i=2; i<n; i++){
-            if(nums[i] != nums[j-2]){
-                nums[j] = nums[i];
-                j++;
+        int i=0;
+        for(int n: nums){
+            if((i<2)||n!=nums[i-2]){ // if less than 2 or not equal to last to last ele 
+                nums[i++]=n;
             }
         }
-        return j;
-        
+        return i;
     }
 }
