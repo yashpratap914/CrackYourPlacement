@@ -1,19 +1,19 @@
 class Solution {
     public int jump(int[] nums) {
-        int n = nums.length;
-        int jumps = 0;
-        int currentEnd = 0;
-        int farthest = 0;
+        int jumps = 0;  // num of jumps
+        int currentEnd = 0; // start 
+        int farthest = 0; // end
         
-        for (int i = 0; i < n - 1; i++) {
-            farthest = Math.max(farthest, i + nums[i]);
-            if (i == currentEnd) {
-                jumps++;
-                currentEnd = farthest;
+        for (int i = 0; i < nums.length - 1; i++) {
+            farthest = Math.max(farthest, i + nums[i]);  // pos where it will go
+            if (i == currentEnd) { 
+                jumps++;  // increase jump
+                currentEnd = farthest; // longest distance stored
             }
         }
         
         return jumps;
+        
         
     }
 }
