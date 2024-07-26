@@ -1,49 +1,35 @@
 class RandomizedSet {
-    private Map<Integer, Integer> indexing;
-    private List<Integer> numbers;
+    // Arraylist -> HashMap
+    HashMap<Integer, Integer> hm;
+    List<Integer> list;
 
     public RandomizedSet() {
-        this.indexing = new HashMap<>();
-        this.numbers = new ArrayList<>();
+        hm = new HashMap<>();
+        list = new ArrayList<>();
     }
     
     public boolean insert(int val) {
-        if(this.indexing.containsKey(val)) {
-            return false;
-        }
-        int indexInsert = this.numbers.size();
-        this.numbers.add(val);
-        this.indexing.put(val, indexInsert);
+        if(hm.containsKey(val)) return false;//false for duplicate
+        list.add(val); // add new val to list
+        hm.put(val,list.size()-1); // make new key value pair
         return true;
-        
     }
     
     public boolean remove(int val) {
-        if(!this.indexing.containsKey(val)) {
-            return false;
-        }
-
-        int lastIndex = this.numbers.size() - 1;
-        int lastElement = this.numbers.get(lastIndex);
-        int indexElement = this.indexing.get(val);
-
-        // Swap with last element
-        this.numbers.set(indexElement, lastElement);
-
-        // Update indices [Add & Delete]
-        this.indexing.put(lastElement, indexElement);
-        this.indexing.remove(val);
-
-        // Remove from list
-        this.numbers.remove(lastIndex);
+        if(hm.containsKey(val) == false) return false; // if it doesnt exist in list return false
+        int ind = hm.get(val);  // if it exists get index(value)
+        Collections.swap(list, ind, list.size()-1); // swap with last element
+        int swappedwith = list.get(ind); // stored removed index
+        hm.put(swappedwith, ind); // changed index value(last that was swapped)
+        list.remove(list.size()-1); //removed last ele from list
+        hm.remove(val); // remove from hashmap
         return true;
-        
     }
     
     public int getRandom() {
-        int randomIndex = (int) (Math.random() * this.numbers.size());
-        return this.numbers.get(randomIndex);
-        
+        Random random = new Random();
+        int n = random.nextInt(list.size());
+        return list.get(n);
     }
 }
 
