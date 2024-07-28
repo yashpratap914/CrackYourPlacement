@@ -2,53 +2,50 @@ import java.util.HashMap;
 
 class Solution {
     public String minWindow(String s, String t) {
-        if (s.length() == 0 || t.length() == 0) return "";
-
-        String ans = "";
-        HashMap<Character, Integer> tMap = new HashMap<>();
-        for (char ch : t.toCharArray()) {
-            tMap.put(ch, tMap.getOrDefault(ch, 0) + 1);
+        int n = s.length();
+        if (t.length() > n) {
+            return ""; // If t is longer than s, return an empty string
+        }
+        
+        HashMap<Character, Integer> mp = new HashMap<>(); // Map to store character frequencies of t
+        for (int i = 0; i < t.length(); i++) {
+            char ch = t.charAt(i);
+            mp.put(ch, mp.getOrDefault(ch, 0) + 1); // Add character frequency to map
         }
 
-        HashMap<Character, Integer> windowMap = new HashMap<>();
-        int i = 0, j = 0; // Window pointers
-        int required = tMap.size(); // Number of unique characters in t to match
-        int formed = 0; // Number of unique characters matched in the current window
-        int[] ansLength = {Integer.MAX_VALUE, 0, 0}; // Length of window, left, right
+        int reqcount = t.length(); // Total characters required
+        int i = 0, j = 0;
+        int minwindowsize = Integer.MAX_VALUE; // Initialize the minimum window size
+        int start_i = 0; // Start index of the minimum window
 
-        while (j < s.length()) {
+        while (j < n) {
             char ch = s.charAt(j);
-            windowMap.put(ch, windowMap.getOrDefault(ch, 0) + 1);
-
-            // Check if the current character's frequency matches with the target frequency
-            if (tMap.containsKey(ch) && windowMap.get(ch).intValue() == tMap.get(ch).intValue()) {
-                formed++;
-            }
-
-            // Try to contract the window until the point it ceases to be 'desirable'
-            while (i <= j && formed == required) {
-                ch = s.charAt(i);
-
-                // Update the answer if this window is smaller
-                if (j - i + 1 < ansLength[0]) {
-                    ansLength[0] = j - i + 1;
-                    ansLength[1] = i;
-                    ansLength[2] = j;
+            if (mp.containsKey(ch)) { // Check if character is in the map
+                if (mp.get(ch) > 0) {
+                    reqcount--; // Decrease the required count
                 }
-
-                // The character at the position pointed by `i` is no longer a part of the window
-                windowMap.put(ch, windowMap.get(ch) - 1);
-                if (tMap.containsKey(ch) && windowMap.get(ch).intValue() < tMap.get(ch).intValue()) {
-                    formed--;
-                }
-
-                i++;
+                mp.put(ch, mp.get(ch) - 1); // Decrease frequency in the map
             }
-
-            // Keep expanding the window
-            j++;
+            
+            while (reqcount == 0) { // All characters matched
+                int currwindowsize = j - i + 1;
+                if (minwindowsize > currwindowsize) { // Update minimum window size
+                    minwindowsize = currwindowsize;
+                    start_i = i; // Update start index
+                }
+                
+                char startChar = s.charAt(i);
+                if (mp.containsKey(startChar)) { // Check if startChar is in the map
+                    mp.put(startChar, mp.get(startChar) + 1); // Increase frequency in the map
+                    if (mp.get(startChar) > 0) {
+                        reqcount++; // Increase required count
+                    }
+                }
+                i++; // Shrink the window
+            }
+            j++; // Expand the window
         }
-
-        return ansLength[0] == Integer.MAX_VALUE ? "" : s.substring(ansLength[1], ansLength[2] + 1);
+        
+        return minwindowsize == Integer.MAX_VALUE ? "" : s.substring(start_i, start_i + minwindowsize); // Return result
     }
 }
