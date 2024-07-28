@@ -1,33 +1,42 @@
 class Solution {
+    List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> threeSum(int[] nums) {
+        // a+b+c =0
+        // b+c = 0-a
         Arrays.sort(nums);
-        List<List<Integer>> triplets = new ArrayList<>();
-        for (int i =0; i<= nums.length-3; i++){
-            if(i==0 || nums[i] != nums[i-1]){
-                int left = i+1, right = nums.length-1;
-                int target = 0-nums[i];
-                while(left<right){
-                    if(nums[left] + nums[right] == target){
-                        List<Integer> triplet = new ArrayList<>();
-                        triplet.add(nums[i]);
-                        triplet.add(nums[left]);
-                        triplet.add(nums[right]);
-                        triplets.add(triplet);
-                        
-                        while(left < nums.length-1 && nums[left]==nums[left+1]) left++;
-                        while(right >0 && nums[right] == nums[right -1])right--;
-                        left++;
-                        right--;
-                    }else if(nums[left] + nums[right] < target){
-                        left++;
-                    } else{
-                        right--;
-                    }
-                }
-                
+        for(int i=0; i<nums.length;i++){
+            //duplicate a
+            if(i==0 || nums[i-1]!=nums[i]){ // either first ele or adjacent ele not equal
+                twoSum(nums, i+1, nums.length-1, 0-nums[i]);
             }
-            
         }
-        return triplets;
-    }//TC: O(nlogn)+ O(n^2)  AND SC: O(1)
+        return res;
+    }
+    void twoSum(int[] nums, int i, int j, int target){
+        int a1 = nums[i-1]; // first ele
+        while(i<j){
+            if(nums[i]+nums[j]>target){
+                j--;
+            }else if(nums[i]+nums[j]<target){
+                i++;
+            }else{
+                List<Integer> list = new ArrayList<>();
+                list.add(a1);
+                list.add(nums[i]); // b
+                list.add(nums[j]); // c
+                
+                res.add(list);
+                
+                //duplicate b
+                while(i<j && nums[i]==nums[i+1])i++;//adjacent ele equal skip that element
+                
+                //duplicate c
+                while(i<j && nums[j]==nums[j-1])j--;//adjacent ele equal skip that element
+                
+                i++;
+                j--;
+            }
+        }
+        
+    }
 }
