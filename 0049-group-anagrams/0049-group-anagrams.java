@@ -2,19 +2,24 @@ class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
         //multiple anagram based groups
         // sort the string in groups
-        Map<String, List<String>> map = new HashMap<>();
+        Map<HashMap<Character, Integer>, ArrayList<String>> map = new HashMap<>();
         for(String s : strs){
-            //Sorting: we cannot directly sort the string but we can make char array
-            char[] charArray = s.toCharArray();
-            Arrays.sort(charArray); // sorted
-            String sorted = new String(charArray); // comparator of string class -> key
-            if(!map.containsKey(sorted)){
-                map.put(sorted, new LinkedList<String>()); // put new sorted key in map
+            HashMap<Character, Integer> fmap = new HashMap<>();
+            for(int i=0; i<s.length(); i++){
+                char ch = s.charAt(i);
+                fmap.put(ch, fmap.getOrDefault(ch, 0)+1);
             }
-            map.get(sorted).add(s); //LL mei add krdiya if key is same
-            
+            if(!map.containsKey(fmap)){
+                ArrayList<String> list = new ArrayList<>();
+                list.add(s);
+                map.put(fmap, list);
+            }
+            else{
+                ArrayList<String> list = map.get(fmap);
+                list.add(s);
+            }
         }
-        return new LinkedList<>(map.values());  
+        return new ArrayList<>(map.values());  
         
         
     }
