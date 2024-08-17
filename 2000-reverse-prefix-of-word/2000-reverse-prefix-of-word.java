@@ -1,21 +1,18 @@
 class Solution {
     public String reversePrefix(String word, char ch) {
-        char[] c = word.toCharArray();
-        int locate = 0;
-        for (int i = 0; i < word.length(); i++) { //first occurrence of ch
-            if (ch == c[i]) {
-                locate = i;
-                break;
+        Stack<Character> st = new Stack<>();
+        String res = "";
+        for(int i =0; i<word.length(); i++){
+            char currch = word.charAt(i);
+            st.push(currch);
+            if(currch == ch){
+                while(!st.isEmpty()){
+                    res = res + st.pop();
+                }
+                res = res + word.substring(i+1, word.length());
+                return res;
             }
         }
-        char[] res = new char[word.length()];
-        for (int i = 0; i <= locate; i++) {
-            res[i] = c[locate - i];
-        }
-        for (int i = locate + 1; i < word.length(); i++) {
-            res[i] = c[i];
-        }
-        return String.valueOf(res);
-        
+        return word;
     }
 }
