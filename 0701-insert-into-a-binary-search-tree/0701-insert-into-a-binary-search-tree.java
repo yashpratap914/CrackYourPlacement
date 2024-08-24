@@ -18,27 +18,11 @@ class Solution {
         if(root == null){
             return new TreeNode(val);
         }
-        // find pos and insert
-        TreeNode temp = root;
-        while(temp!=null){
-            if(val<temp.val){
-                //left subtree
-                if(temp.left==null){
-                    temp.left = new TreeNode(val);
-                    break;
-                }else{
-                    temp=temp.left;
-                }
-            }else{
-                //right subtree
-                if(temp.right==null){
-                    temp.right = new TreeNode(val);
-                    break;
-                }else{
-                    temp=temp.right;
-                }
-                
-            }
+        if(val<root.val){
+            root.left = insertIntoBST(root.left, val); 
+        }
+        else{
+            root.right = insertIntoBST(root.right, val); 
         }
         return root;
     }
