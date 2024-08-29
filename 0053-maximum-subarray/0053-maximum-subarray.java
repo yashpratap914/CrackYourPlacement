@@ -14,6 +14,5 @@ class Solution {
             max = Math.max(max, currsum);
         }
         return max;
-        
     }
 }
