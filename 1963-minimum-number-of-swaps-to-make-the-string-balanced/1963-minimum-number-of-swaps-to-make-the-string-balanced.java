@@ -1,16 +1,15 @@
 class Solution {
     public int minSwaps(String s) {
-        int extraClosingbrackets = 0, max = 0;
-        for(int i = 0; i < s.length(); i++) {
-            if(s.charAt(i)== ']') {
-                extraClosingbrackets++;
-                max = Math.max(extraClosingbrackets, max);
+        int countSwap=0;
+        for(char ch:s.toCharArray()){
+            if(ch=='['){
+                countSwap++;
             }
-            else 
-                extraClosingbrackets--;
-        }
-
-        return (max + 1) / 2;
+            else if(countSwap>0){
+                countSwap--;
+            }
+        }        
+        return (countSwap+1)/2;
         
     }
 }
